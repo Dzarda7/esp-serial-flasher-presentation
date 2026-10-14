@@ -244,6 +244,9 @@ layout: center
 </div>
 
 ---
+layout: two-cols
+class: text-left
+---
 
 # 📱 Flashování z telefonu
 
@@ -252,10 +255,14 @@ layout: center
 - 🔌 USB OTG: CP210x i USB-Serial-JTAG
 - 🧳 Celá „programovačka“ v kapse
 
-<div class="mt-8 text-2xl opacity-80">➡️ přepnout na scrcpy</div>
+::right::
+
+<div class="h-110">
+  <PhoneMirror />
+</div>
 
 <!--
-Demo: telefon zrcadlený přes scrcpy, ESP32-C5 přes OTG.
+Demo: telefon zrcadlený přes scrcpy (./phone.sh) do v4l2loopback kamery, ESP32-C5 přes OTG.
 Záloha: video/repozitář, pokud by scrcpy nebo OTG zlobilo.
 -->
 
