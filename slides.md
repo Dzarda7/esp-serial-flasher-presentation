@@ -244,9 +244,14 @@ layout: center
 </div>
 
 ---
-layout: two-cols
 class: text-left
 ---
+
+<div class="absolute left-4 top-2 bottom-2 w-80">
+  <PhoneMirror />
+</div>
+
+<div class="ml-76">
 
 # 📱 Flashování z telefonu
 
@@ -255,10 +260,6 @@ class: text-left
 - 🔌 USB OTG: CP210x i USB-Serial-JTAG
 - 🧳 Celá „programovačka“ v kapse
 
-::right::
-
-<div class="h-110">
-  <PhoneMirror />
 </div>
 
 <!--
