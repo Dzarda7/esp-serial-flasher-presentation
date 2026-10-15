@@ -248,7 +248,7 @@ class: text-left
 ---
 
 <div class="absolute left-4 top-2 bottom-2 w-80">
-  <PhoneMirror />
+  <video src="/videos/android-demo.mp4" autoplay loop muted playsinline class="h-full mx-auto rounded-xl shadow-lg" />
 </div>
 
 <div class="ml-76">
@@ -263,8 +263,7 @@ class: text-left
 </div>
 
 <!--
-Demo: telefon zrcadlený přes scrcpy (./phone.sh) do v4l2loopback kamery, ESP32-C5 přes OTG.
-Záloha: video/repozitář, pokud by scrcpy nebo OTG zlobilo.
+Demo: záznam z telefonu (scrcpy --record), ESP32-C5 přes OTG.
 -->
 
 ---
