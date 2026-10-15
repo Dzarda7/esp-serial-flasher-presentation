@@ -95,8 +95,8 @@ transition: slide-up
 # ESP-Serial-Flasher
 
 <div class="mt-10 text-3xl leading-relaxed">
-esptool napsaný v C<br>
-<span class="opacity-80">snadno portovatelný kamkoliv 🌍</span>
+esptool jako C knihovna<br>
+<span class="opacity-80">pro jakýkoliv mikrokontrolér, Linux i Android</span>
 </div>
 
 <div class="grid grid-cols-3 gap-6 mt-14 text-center">
