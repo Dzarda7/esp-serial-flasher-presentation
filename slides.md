@@ -244,6 +244,51 @@ layout: center
 </div>
 
 ---
+
+# 🔵 Arduino
+
+<div class="grid grid-cols-[1.15fr_1fr] gap-6 mt-2">
+<div>
+
+```cpp {all|7-9|11-13|all}
+#include <EspSerialFlasher.h>
+
+ArduinoFlasherPort port;
+esp_loader_t loader;
+
+void setup() {
+  port.serial    = &Serial1;
+  port.reset_pin = TARGET_EN;
+  port.boot_pin  = TARGET_BOOT;
+
+  esp_loader_init_serial(&loader, &port.port);
+  esp_loader_connect_args_t args = ESP_LOADER_CONNECT_DEFAULT();
+  esp_loader_connect_with_stub(&loader, &args);
+  // … a dál stejné C API jako všude jinde
+}
+```
+
+</div>
+<div>
+
+<img src="/images/arduino-wiring.svg" class="w-full" />
+
+- 🔌 UART + 2 GPIO, libovolná deska
+- 📦 Arduino IDE (.zip) i PlatformIO
+- 🔁 Upstream 1:1, vlastní je jen port
+- 📁 Příklad `FlashFromFile` (LittleFS)
+
+🔗 [github.com/Dzarda7/EspSerialFlasher](https://github.com/Dzarda7/EspSerialFlasher)
+
+</div>
+</div>
+
+<!--
+Celý sketch: File → Examples → EspSerialFlasher → FlashFromFile.
+Zbytek (flash_start/write/finish) je stejný jako na slidu „Použití“.
+-->
+
+---
 class: text-left
 ---
 
@@ -260,6 +305,8 @@ class: text-left
 - 🔌 USB OTG: CP210x i USB-Serial-JTAG
 - 🧳 Celá „programovačka“ v kapse
 
+🔗 [github.com/Dzarda7/esp-flasher-android](https://github.com/Dzarda7/esp-flasher-android)
+
 </div>
 
 <!--
@@ -268,21 +315,16 @@ Demo: záznam z telefonu (scrcpy --record), ESP32-C5 přes OTG.
 
 ---
 
-# 🔵 Arduino
+# ⚡ Paralelní flasher
 
-- 📚 `EspSerialFlasher` v Arduino Library Manageru
-- 🔁 Upstream kopírovaný 1:1, vlastní je jen port
-- 📁 Příklad: nahraj `app.bin` z LittleFS do jiného ESP
+<video src="/videos/parallel-demo.mp4" autoplay loop muted playsinline class="h-100 mx-auto mt-4 rounded-lg shadow-lg" />
 
-```cpp
-#include <EspSerialFlasher.h>
-
-static ArduinoFlasherPort port;
-static esp_loader_t loader;
-```
+<div class="mt-3 text-center opacity-70">ESP32-P4 · 4× UART + 4× USB přes hub · každý cíl má vlastní <code>esp_loader_t</code></div>
 
 <!--
-TODO: video / screenshot z Arduino IDE (Library Manager → instalace → flash).
+Záznam přímo z displeje P4 (main/capture.c v serial_flasher_demo), kruh = dotyk.
+Pointa: výrobní linka bez PC, každý cíl běží ve vlastním tasku nezávisle na ostatních.
+UART flashování je v záznamu zrychlené 2,5×, USB 2×.
 -->
 
 ---
@@ -311,25 +353,12 @@ TODO: video dema. Aktuálně link test na ESP32-S3-LCD-EV-Board (~/Documents/My/
 
 ---
 
-# ⚡ Paralelní flasher
-
-<video src="/videos/parallel-demo.mp4" autoplay loop muted playsinline class="h-100 mx-auto mt-4 rounded-lg shadow-lg" />
-
-<div class="mt-3 text-center opacity-70">ESP32-P4 · 4× UART + 4× USB přes hub · každý cíl má vlastní <code>esp_loader_t</code></div>
-
-<!--
-Záznam přímo z displeje P4 (main/capture.c v serial_flasher_demo), kruh = dotyk.
-Pointa: výrobní linka bez PC, každý cíl běží ve vlastním tasku nezávisle na ostatních.
-UART flashování je v záznamu zrychlené 2,5×, USB 2×.
--->
-
----
-
 # Vyzkoušejte to! 🙌
 
 - ⭐ GitHub: `github.com/espressif/esp-serial-flasher`
 - 📦 ESP Component Registry: `espressif/esp-serial-flasher`
-- 🔵 Arduino Library Manager: `EspSerialFlasher`
+- 🔵 Arduino: `github.com/Dzarda7/EspSerialFlasher`
+- 📱 Android: `github.com/Dzarda7/esp-flasher-android`
 - 🐛 Issues a PR vítány, hlavně nové porty!
 
 ---
