@@ -150,7 +150,7 @@ esptool jako C knihovna<br>
 </div>
 
 <div class="border border-gray-600 rounded-lg px-4 py-2">
-<b>💾 SDIO</b> <span class="opacity-70 text-sm">experimentální</span><br>
+<b>💾 SDIO</b><br>
 <span class="text-sm">Plný stub přes SDIO: flash, čtení, eFuse<br>C5, C6</span>
 </div>
 
@@ -159,7 +159,7 @@ esptool jako C knihovna<br>
 <div class="mt-6 text-left">
 
 🖥️ <b>Porty v knihovně:</b> ESP32 (UART, USB CDC, SPI, SDIO), STM32, Raspberry Pi Pico, Zephyr, Linux<br>
-<span class="opacity-70">Mimo knihovnu: 🆕 Arduino, 🆕 Android</span>
+<span class="opacity-70">🔜 Brzy i esptool-js v prohlížeči</span>
 
 </div>
 
