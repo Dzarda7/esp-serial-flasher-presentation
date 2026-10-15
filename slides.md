@@ -262,45 +262,40 @@ layout: center
 
 # 🔵 Arduino
 
-<div class="grid grid-cols-[1.15fr_1fr] gap-6 mt-2">
+<div class="grid grid-cols-[1.1fr_1fr] gap-6 mt-4 items-start">
+
+<img src="/images/arduino-readme.png" class="w-full rounded-lg border border-gray-700 shadow-lg" />
+
 <div>
 
-```cpp {all|7-9|11-13|all}
+```cpp
 #include <EspSerialFlasher.h>
 
 ArduinoFlasherPort port;
 esp_loader_t loader;
 
 void setup() {
+  Serial1.begin(115200, SERIAL_8N1, RX, TX);
   port.serial    = &Serial1;
   port.reset_pin = TARGET_EN;
   port.boot_pin  = TARGET_BOOT;
 
   esp_loader_init_serial(&loader, &port.port);
-  esp_loader_connect_args_t args = ESP_LOADER_CONNECT_DEFAULT();
+  esp_loader_connect_args_t args =
+      ESP_LOADER_CONNECT_DEFAULT();
   esp_loader_connect_with_stub(&loader, &args);
-  // … a dál stejné C API jako všude jinde
+  // … flash_start / write / finish
 }
 ```
 
 </div>
-<div>
-
-<img src="/images/arduino-wiring.svg" class="w-full" />
-
-- 🔌 UART + 2 GPIO, libovolná deska
-- 📦 Arduino IDE (.zip) i PlatformIO
-- 🔁 Upstream 1:1, vlastní je jen port
-- 📁 Příklad `FlashFromFile` (LittleFS)
-
-🔗 [github.com/Dzarda7/EspSerialFlasher](https://github.com/Dzarda7/EspSerialFlasher)
-
 </div>
-</div>
+
+<div class="mt-4">📚 Arduino Library Manager: <code>EspSerialFlasher</code> · 🔗 <a href="https://github.com/Dzarda7/EspSerialFlasher">github.com/Dzarda7/EspSerialFlasher</a></div>
 
 <!--
-Celý sketch: File → Examples → EspSerialFlasher → FlashFromFile.
-Zbytek (flash_start/write/finish) je stejný jako na slidu „Použití“.
+Obrázek = začátek README knihovny. Celý sketch: File → Examples → EspSerialFlasher → FlashFromFile (app.bin z LittleFS).
+Upstream esp-serial-flasher je v knihovně 1:1, vlastní je jen Arduino port (~200 řádků).
 -->
 
 ---
@@ -376,7 +371,7 @@ TODO: video dema. Aktuálně link test na ESP32-S3-LCD-EV-Board (~/Documents/My/
 
 - ⭐ GitHub: `github.com/espressif/esp-serial-flasher`
 - 📦 ESP Component Registry: `espressif/esp-serial-flasher`
-- 🔵 Arduino: `github.com/Dzarda7/EspSerialFlasher`
+- 🔵 Arduino Library Manager: `EspSerialFlasher`
 - 📱 Android: `github.com/Dzarda7/esp-flasher-android`
 - 🐛 Issues a PR vítány!
 
