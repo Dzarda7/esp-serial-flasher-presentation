@@ -158,8 +158,7 @@ esptool jako C knihovna<br>
 
 <div class="mt-6 text-left">
 
-🖥️ <b>Porty v knihovně:</b> ESP32 (UART, USB CDC, SPI, SDIO), STM32, Raspberry Pi Pico, Zephyr, Linux<br>
-<span class="opacity-70">🔜 Brzy i esptool-js v prohlížeči</span>
+🖥️ <b>Porty v knihovně:</b> ESP32, STM32, Raspberry Pi Pico, Zephyr, Linux, <span class="opacity-70 whitespace-nowrap">🚧 esptool-js</span>
 
 </div>
 
@@ -295,11 +294,11 @@ Paralelní demo: 8 cílů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 <div class="text-sm opacity-70 mt-1">Jen knihovna (bez portu a libc) · connect + flash + MD5 · <code>-Os</code>, <code>--gc-sections</code>, log WARN</div>
 
 <table class="mt-6 text-lg">
-<thead><tr><th class="text-left">Varianta</th><th class="text-right">RISC-V</th><th class="text-right">Cortex-M4</th><th></th></tr></thead>
+<thead><tr><th class="text-left">Varianta</th><th class="!text-right">Flash</th><th></th></tr></thead>
 <tbody>
-<tr><td>Jen ROM, bez stubu</td><td class="text-right">8,6 kB</td><td class="text-right">7,7 kB</td><td><div class="h-3 rounded bg-green-500" style="width:8px"></div></td></tr>
-<tr><td>Všechny stuby (<code>connect_with_stub</code>)</td><td class="text-right">121,5 kB</td><td class="text-right">120,6 kB</td><td><div class="h-3 rounded bg-red-500" style="width:240px"></div></td></tr>
-<tr><td>Jeden stub (<code>stub_provider</code>)</td><td class="text-right">18,2 kB</td><td class="text-right">17,4 kB</td><td><div class="h-3 rounded bg-yellow-500" style="width:36px"></div></td></tr>
+<tr><td>Jen ROM, bez stubu</td><td class="text-right">~9 kB</td><td><div class="h-3 rounded bg-green-500" style="width:8px"></div></td></tr>
+<tr><td>Všechny stuby (<code>connect_with_stub</code>)</td><td class="text-right">~120 kB</td><td><div class="h-3 rounded bg-red-500" style="width:240px"></div></td></tr>
+<tr><td>Jeden stub (<code>stub_provider</code>)</td><td class="text-right">~18 kB</td><td><div class="h-3 rounded bg-yellow-500" style="width:36px"></div></td></tr>
 </tbody>
 </table>
 
@@ -308,18 +307,6 @@ Paralelní demo: 8 cílů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 <!--
 Měřeno na master (7d89055), RISC-V = esp toolchain GCC 16.1 rv32imc, Cortex-M4 = arm-none-eabi 13.2. Počítají se jen objekty knihovny.
 Bez logování je to o ~0,9 kB méně. MD5 je zhruba třetina (2,6 kB).
--->
-
----
-
-# esptool-js 🤝 esp-serial-flasher
-
-- 🌐 esptool-js plánuje stavět na esp-serial-flasher
-- 🧠 Jedno jádro pro mikrokontroléry i prohlížeč
-- 🐛 Opravené jednou = opravené všude
-
-<!--
-TODO: ověřit, co přesně můžu o plánech esptool-js veřejně říct (WebAssembly? časový plán?).
 -->
 
 ---
