@@ -275,7 +275,6 @@ Paralelní demo: 8 cílů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 <tr><td>Jen ROM, bez stubu</td><td class="text-right">8,6 kB</td><td class="text-right">7,7 kB</td><td><div class="h-3 rounded bg-green-500" style="width:8px"></div></td></tr>
 <tr><td>Všechny stuby (<code>connect_with_stub</code>)</td><td class="text-right">121,5 kB</td><td class="text-right">120,6 kB</td><td><div class="h-3 rounded bg-red-500" style="width:240px"></div></td></tr>
 <tr><td>Jeden stub (<code>stub_provider</code>)</td><td class="text-right">18,2 kB</td><td class="text-right">17,4 kB</td><td><div class="h-3 rounded bg-yellow-500" style="width:36px"></div></td></tr>
-<tr><td>🚧 Jen jeden čip, bez stubu</td><td class="text-right">7,7 kB</td><td class="text-right">6,9 kB</td><td><div class="h-3 rounded bg-green-500" style="width:7px"></div></td></tr>
 </tbody>
 </table>
 
@@ -283,7 +282,6 @@ Paralelní demo: 8 cílů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 
 <!--
 Měřeno na master (7d89055), RISC-V = esp toolchain GCC 16.1 rv32imc, Cortex-M4 = arm-none-eabi 13.2. Počítají se jen objekty knihovny.
-Poslední řádek: připravovaný výběr cílových čipů (ESP_LOADER_CONNECT_TARGETS), jen popis jednoho čipu, ostatní tabulky vypadnou.
 Bez logování je to o ~0,9 kB méně. MD5 je zhruba třetina (2,6 kB).
 -->
 
