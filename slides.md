@@ -47,7 +47,7 @@ Krátký callback na minulý talk. Pokud někdo minule nebyl, nevadí – navazo
 
 - 🧠 Každý ESP čip má v ROM bootloader, ten se nedá rozbít
 - 🗣️ esptool, esptool-js, espflash, Arduino IDE, ESP-IDF… všichni mluví s ROM
-- 📜 Protokol je veřejně zdokumentovaný a napříč čipy skoro stejný → může ho mluvit kdokoliv
+- 📜 Protokol je veřejně zdokumentovaný a napříč čipy skoro stejný → může jím komunikovat každý
 
 <!--
 Záměrně bez detailů protokolu (SLIP, sync…). Pointa: komunikace s ROM bootloaderem je známá a stabilní,
