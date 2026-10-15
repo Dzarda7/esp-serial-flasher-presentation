@@ -145,13 +145,13 @@ esptool jako C knihovna<br>
 </div>
 
 <div class="border border-gray-600 rounded-lg px-4 py-2">
-<b>⚡ SPI</b> <span class="opacity-70 text-sm">jen nahrání do RAM</span><br>
-<span class="text-sm">Rychlý start kódu bez flashování<br>S3, C2, C3, H2</span>
+<b>⚡ SPI</b> <span class="opacity-70 text-sm">zatím jen nahrání do RAM</span><br>
+<span class="text-sm">Flashování přijde 🔜<br>S3, C2, C3, H2</span>
 </div>
 
 <div class="border border-gray-600 rounded-lg px-4 py-2">
 <b>💾 SDIO</b><br>
-<span class="text-sm">Plný stub přes SDIO: flash, čtení, eFuse<br>C5, C6</span>
+<span class="text-sm">C5, C6</span>
 </div>
 
 </div>
