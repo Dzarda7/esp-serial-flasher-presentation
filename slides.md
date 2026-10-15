@@ -232,14 +232,14 @@ Paralelní demo: 8 čipů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 
 # Kolik to stojí? 🪶
 
-<div class="text-sm opacity-70 mt-1">Jen knihovna (bez portu a libc) · connect + flash + MD5 · <code>-Os</code>, <code>--gc-sections</code>, log WARN</div>
+<div class="text-sm opacity-70 mt-1">Jen knihovna (bez portu a libc) · connect + flash + MD5 · <code>-Os</code>, <code>--gc-sections</code>, logování vypnuté</div>
 
 <table class="mt-6 text-lg">
 <thead><tr><th class="text-left">Varianta</th><th class="!text-right">Flash</th><th></th></tr></thead>
 <tbody>
-<tr><td>Jen ROM, bez stubu</td><td class="text-right">~9 kB</td><td><div class="h-3 rounded bg-green-500" style="width:8px"></div></td></tr>
+<tr><td>Jen ROM, bez stubu</td><td class="text-right">~8 kB</td><td><div class="h-3 rounded bg-green-500" style="width:8px"></div></td></tr>
 <tr><td>Všechny stuby (<code>connect_with_stub</code>)</td><td class="text-right">~120 kB</td><td><div class="h-3 rounded bg-red-500" style="width:240px"></div></td></tr>
-<tr><td>Jeden stub (<code>stub_provider</code>)</td><td class="text-right">~18 kB</td><td><div class="h-3 rounded bg-yellow-500" style="width:36px"></div></td></tr>
+<tr><td>Jeden stub (<code>stub_provider</code>)</td><td class="text-right">~17 kB</td><td><div class="h-3 rounded bg-yellow-500" style="width:36px"></div></td></tr>
 </tbody>
 </table>
 
@@ -247,7 +247,7 @@ Paralelní demo: 8 čipů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 
 <!--
 Měřeno na master (7d89055), RISC-V = esp toolchain GCC 16.1 rv32imc, Cortex-M4 = arm-none-eabi 13.2. Počítají se jen objekty knihovny.
-Bez logování je to o ~0,9 kB méně. MD5 je zhruba třetina (2,6 kB).
+Log NONE, RISC-V: 7 879 B / 123 443 B / 17 687 B. S logem WARN o ~0,9 kB víc. MD5 je zhruba třetina (2,6 kB).
 -->
 
 ---
