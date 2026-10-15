@@ -96,7 +96,7 @@ transition: slide-up
 
 <div class="mt-10 text-3xl leading-relaxed">
 esptool jako C knihovna<br>
-<span class="opacity-80">pro jakýkoliv mikrokontrolér, Linux i Android</span>
+<span class="opacity-80">snadno portovatelná na jakoukoliv platformu</span>
 </div>
 
 <div class="grid grid-cols-3 gap-6 mt-14 text-center">
