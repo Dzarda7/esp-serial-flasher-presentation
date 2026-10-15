@@ -69,9 +69,22 @@ transition: slide-up
 
 # ESP-Serial-Flasher
 
-### esptool napsaný v C pro embedded
+<div class="mt-10 text-3xl leading-relaxed">
+esptool napsaný v C<br>
+<span class="opacity-80">snadno portovatelný kamkoliv 🌍</span>
+</div>
 
-<div class="grid grid-cols-2 gap-x-8 mt-4 text-left">
+<div class="grid grid-cols-3 gap-6 mt-14 text-center">
+  <div>🧩<br><b>Čisté C</b><br><span class="opacity-70 text-sm">bez závislostí a bez malloc</span></div>
+  <div>🔌<br><b>Port = pár funkcí</b><br><span class="opacity-70 text-sm">UART, dva piny, časovač</span></div>
+  <div>🔓<br><b>Open source</b><br><span class="opacity-70 text-sm">Apache 2.0</span></div>
+</div>
+
+---
+
+# Co umí? 🧰
+
+<div class="grid grid-cols-2 gap-x-8 mt-6 text-left">
 <div>
 
 - 🔗 Připojení, autodetekce čipu, MAC, security info
@@ -85,40 +98,9 @@ transition: slide-up
 - 🚀 Flasher stub: rychlejší, vyšší baudrate
 - 🔐 eFuse: čtení, zápis eFuse a klíčů
 - 🔧 Registry, změna baudrate, reset cíle
-- 🪶 Platíte jen za to, co použijete
+- 🧳 Víc cílů najednou, každý svůj stav
 
 </div>
-</div>
-
-<div class="mt-6 opacity-70">🔓 Open source, Apache 2.0</div>
-
-<!--
-Stub je volitelný: bez stubu (jen ROM) ~9 KB flash, jen stuby pro vaše čipy, nebo stub z externí paměti.
-eFuse tabulky se linkují jen pro vybrané čipy.
--->
-
----
-
-# Kde se to hodí? 💡
-
-<div class="grid grid-cols-2 gap-x-8 gap-y-3 mt-6 text-left">
-
-<div>📡 <b>ESP jako Wi-Fi/BLE koprocesor</b><br><span class="opacity-70 text-sm">STM32/nRF aktualizuje ESP-Hosted nebo AT firmware v terénu</span></div>
-
-<div>🏭 <b>Výroba a programování</b><br><span class="opacity-70 text-sm">Samostatná programovačka bez PC, víc kusů najednou</span></div>
-
-<div>📱 <b>Servis v terénu</b><br><span class="opacity-70 text-sm">Update z telefonu přes USB OTG</span></div>
-
-<div>🧩 <b>Víc ESP v jednom produktu</b><br><span class="opacity-70 text-sm">Hlavní ESP aktualizuje ostatní na desce</span></div>
-
-<div>🧪 <b>Testovací přípravky</b><br><span class="opacity-70 text-sm">Nahrát test firmware do RAM, otestovat, nahrát produkční</span></div>
-
-<div>🌐 <b>Gateway a hub</b><br><span class="opacity-70 text-sm">Brána aktualizuje připojené moduly po UART/CAN/RS-485</span></div>
-
-<div>🚑 <b>Recovery</b><br><span class="opacity-70 text-sm">Oživení zařízení se zničenou aplikací – ROM přežije všechno</span></div>
-
-<div>🎓 <b>Výuka a kity</b><br><span class="opacity-70 text-sm">Kit, který si sám nahraje úlohy do žákovských desek</span></div>
-
 </div>
 
 ---
@@ -192,38 +174,76 @@ Pointa: nová platforma = UART read/write, dva GPIO a časovač.
 
 ---
 
-# Stav patří instanci, ne globálu 🧳
+# Implementace portu: Arduino 🔵
 
-```c {all|1-6|8-9|11-14|all}
-typedef struct {
-    esp_loader_port_t port;          // ukazatel na ops
-    uint32_t   uart_port;
-    gpio_num_t uart_rx_pin, uart_tx_pin, reset_pin, boot_pin;
-    /* … privátní stav portu … */
-} esp32_port_t;
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div>
 
-esp32_port_t port_a = { .port.ops = &esp32_uart_ops, .uart_port = UART_NUM_1, /* … */ };
-esp32_port_t port_b = { .port.ops = &esp32_uart_ops, .uart_port = UART_NUM_2, /* … */ };
+```cpp
+struct ArduinoFlasherPort {
+    esp_loader_port_t port = { &arduino_port_ops };
+    HardwareSerial *serial;
+    int reset_pin, boot_pin;
+};
 
-esp_loader_t loader_a, loader_b;                 // stav cíle: čip, stub, flash…
-esp_loader_init_serial(&loader_a, &port_a.port);
-esp_loader_init_serial(&loader_b, &port_b.port);
+static void arduino_enter_bootloader(
+    esp_loader_port_t *port)
+{
+    ArduinoFlasherPort *p =
+        container_of(port, ArduinoFlasherPort, port);
+    digitalWrite(p->boot_pin, LOW);    // BOOT dole
+    digitalWrite(p->reset_pin, LOW);   // reset
+    delay(100);
+    digitalWrite(p->reset_pin, HIGH);  // start v ROM
+    delay(50);
+    digitalWrite(p->boot_pin, HIGH);
+}
 ```
 
-- 🎯 `esp_loader_t` drží stav cíle, port drží stav hardwaru
-- 🚫 Žádné globální proměnné → libovolný počet cílů najednou, každý ve svém tasku
-- 🔁 V callbacku `container_of(port, esp32_port_t, port)` → vlastní data
+</div>
+<div>
+
+```cpp
+static esp_loader_error_t arduino_write(
+    esp_loader_port_t *port, const uint8_t *data,
+    uint16_t size, uint32_t timeout)
+{
+    HardwareSerial *s = get_port(port)->serial;
+    return s->write(data, size) == size
+        ? ESP_LOADER_SUCCESS : ESP_LOADER_ERROR_FAIL;
+}
+
+const esp_loader_port_ops_t arduino_port_ops = {
+    .init             = arduino_init,
+    .enter_bootloader = arduino_enter_bootloader,
+    .write            = arduino_write,
+    .read             = arduino_read,
+    /* … časovač, delay, log … */
+};
+```
+
+</div>
+</div>
+
+<div class="mt-2 opacity-70 text-sm">Celý port ≈ 200 řádků · <code>container_of</code> → každá instance má svoje piny a UART</div>
 
 <!--
-Tohle umožňuje paralelní flasher z dema: 8 cílů, 8 loaderů, 8 portů.
+Zjednodušeno z EspSerialFlasher.cpp (bez invert pinů a nastavitelných časů).
 -->
 
 ---
 
-# Použití
+# Použití: port + knihovna
 
-```c
-esp_loader_t loader;
+```c {1-7|8-9|11-12|14-18|all}
+esp32_port_t port = {
+    .port.ops    = &esp32_uart_ops,
+    .baud_rate   = 115200,
+    .uart_port   = UART_NUM_1,
+    .uart_rx_pin = GPIO_NUM_5,  .uart_tx_pin = GPIO_NUM_4,
+    .reset_pin   = GPIO_NUM_25, .boot_pin    = GPIO_NUM_26,
+};
+esp_loader_t loader;                                  // stav cíle: čip, stub, flash…
 esp_loader_init_serial(&loader, &port.port);
 
 esp_loader_connect_args_t args = ESP_LOADER_CONNECT_DEFAULT();
@@ -231,14 +251,40 @@ esp_loader_connect_with_stub(&loader, &args);
 
 esp_loader_flash_cfg_t cfg = { .offset = 0x10000, .image_size = size, .block_size = 4096 };
 esp_loader_flash_start(&loader, &cfg);
-while (/* data */) {
+while (/* data */)
     esp_loader_flash_write(&loader, &cfg, chunk, chunk_len);
-}
-esp_loader_flash_finish(&loader, &cfg);   // ověří MD5
+esp_loader_flash_finish(&loader, &cfg);               // ověří MD5
 ```
 
+<div class="mt-3">🧳 Žádné globály: další cíl = další port + další <code>esp_loader_t</code> → paralelní flashování</div>
+
 <!--
-Pro hobbisty: připojit, nahrát, hotovo. Odkud data přijdou (SD karta, Wi-Fi, LittleFS, pole v C) je na vás.
+Port pro ESP32 je přímo v knihovně (port/esp32_port.h). Odkud data přijdou (SD karta, Wi-Fi, LittleFS, pole v C) je na vás.
+Paralelní demo: 8 cílů = 8 portů + 8 loaderů, každý ve vlastním tasku.
+-->
+
+---
+
+# Kolik to stojí? 🪶
+
+<div class="text-sm opacity-70 mt-1">Jen knihovna (bez portu a libc) · connect + flash + MD5 · <code>-Os</code>, <code>--gc-sections</code>, log WARN</div>
+
+<table class="mt-6 text-lg">
+<thead><tr><th class="text-left">Varianta</th><th class="text-right">RISC-V</th><th class="text-right">Cortex-M4</th><th></th></tr></thead>
+<tbody>
+<tr><td>Jen ROM, bez stubu</td><td class="text-right">8,6 kB</td><td class="text-right">7,7 kB</td><td><div class="h-3 rounded bg-green-500" style="width:8px"></div></td></tr>
+<tr><td>Všechny stuby (<code>connect_with_stub</code>)</td><td class="text-right">121,5 kB</td><td class="text-right">120,6 kB</td><td><div class="h-3 rounded bg-red-500" style="width:240px"></div></td></tr>
+<tr><td>Jeden stub (<code>stub_provider</code>)</td><td class="text-right">18,2 kB</td><td class="text-right">17,4 kB</td><td><div class="h-3 rounded bg-yellow-500" style="width:36px"></div></td></tr>
+<tr><td>🚧 Jen jeden čip, bez stubu</td><td class="text-right">7,7 kB</td><td class="text-right">6,9 kB</td><td><div class="h-3 rounded bg-green-500" style="width:7px"></div></td></tr>
+</tbody>
+</table>
+
+<div class="mt-4">💾 0 B statické RAM · stub jde nahrát i z externí paměti</div>
+
+<!--
+Měřeno na master (7d89055), RISC-V = esp toolchain GCC 16.1 rv32imc, Cortex-M4 = arm-none-eabi 13.2. Počítají se jen objekty knihovny.
+Poslední řádek: připravovaný výběr cílových čipů (ESP_LOADER_CONNECT_TARGETS), jen popis jednoho čipu, ostatní tabulky vypadnou.
+Bez logování je to o ~0,9 kB méně. MD5 je zhruba třetina (2,6 kB).
 -->
 
 ---
