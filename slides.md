@@ -313,27 +313,14 @@ TODO: video dema. Aktuálně link test na ESP32-S3-LCD-EV-Board (~/Documents/My/
 
 # ⚡ Paralelní flasher
 
-### Jeden host, N cílů najednou
+<video src="/videos/parallel-demo.mp4" autoplay loop muted playsinline class="h-100 mx-auto mt-4 rounded-lg shadow-lg" />
 
-<div class="flex items-center justify-center gap-10 mt-8 text-xl">
-  <div class="border-2 border-green-400 rounded-lg px-6 py-8">ESP32-P4</div>
-  <div class="flex flex-col gap-2">
-    <div>UART0 ➡️ <span class="border border-blue-400 rounded px-3 py-1">ESP #1</span></div>
-    <div>UART1 ➡️ <span class="border border-blue-400 rounded px-3 py-1">ESP #2</span></div>
-    <div>UART2 ➡️ <span class="border border-blue-400 rounded px-3 py-1">ESP #3</span></div>
-    <div>UART… ➡️ <span class="border border-blue-400 rounded px-3 py-1">ESP #N</span></div>
-  </div>
-</div>
-
-<div class="mt-8">
-
-- 🏭 Výrobní linka bez PC
-- 🧵 Každý cíl má vlastní `esp_loader_t`, takže běží nezávisle
-
-</div>
+<div class="mt-3 text-center opacity-70">ESP32-P4 · 4× UART + 4× USB přes hub · každý cíl má vlastní <code>esp_loader_t</code></div>
 
 <!--
-TODO: video / počet desek / čas flashování vs. sériově.
+Záznam přímo z displeje P4 (main/capture.c v serial_flasher_demo), kruh = dotyk.
+Pointa: výrobní linka bez PC, každý cíl běží ve vlastním tasku nezávisle na ostatních.
+UART flashování je v záznamu zrychlené 2,5×, USB 2×.
 -->
 
 ---
