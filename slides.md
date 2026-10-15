@@ -302,13 +302,13 @@ Upstream esp-serial-flasher je v knihovně 1:1, vlastní je jen Arduino port (~2
 class: text-left
 ---
 
-<div class="absolute left-4 top-2 bottom-2 w-80">
+<div class="absolute right-6 top-16 bottom-3 w-72">
   <SlidevVideo autoplay autoreset="slide" loop muted playsinline class="h-full mx-auto rounded-xl shadow-lg">
     <source src="/videos/android-demo.mp4" type="video/mp4" />
   </SlidevVideo>
 </div>
 
-<div class="ml-76">
+<div class="mr-76">
 
 # 📱 Flashování z telefonu
 
