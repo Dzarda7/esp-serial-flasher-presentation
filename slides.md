@@ -255,7 +255,7 @@ layout: center
 ---
 
 <div class="text-center">
-  <h1 class="text-8xl">Demo time 🎬</h1>
+  <h1 class="text-7xl">Co se s tím dá postavit? 🛠️</h1>
 </div>
 
 ---
