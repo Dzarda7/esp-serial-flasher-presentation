@@ -74,11 +74,31 @@ transition: slide-up
 
 ### esptool napsaný v C pro embedded
 
-- 🔗 Připojení, autodetekce čipu, MAC adresa, security info
-- 💾 Zápis, čtení, mazání flash, ověření přes MD5
+<div class="grid grid-cols-2 gap-x-8 mt-4 text-left">
+<div>
+
+- 🔗 Připojení, autodetekce čipu, MAC, security info
+- 💾 Flash: zápis, čtení, mazání, ověření MD5
+- 🗜️ Komprimovaný zápis (deflate)
 - 🧮 Nahrání a spuštění kódu v RAM
+
+</div>
+<div>
+
+- 🚀 Flasher stub: rychlejší, vyšší baudrate
+- 🔐 eFuse: čtení, zápis eFuse a klíčů
 - 🔧 Registry, změna baudrate, reset cíle
-- 🔓 Open source, Apache 2.0
+- 🪶 Platíte jen za to, co použijete
+
+</div>
+</div>
+
+<div class="mt-6 opacity-70">🔓 Open source, Apache 2.0</div>
+
+<!--
+Stub je volitelný: bez stubu (jen ROM) ~9 KB flash, jen stuby pro vaše čipy, nebo stub z externí paměti.
+eFuse tabulky se linkují jen pro vybrané čipy.
+-->
 
 ---
 
@@ -111,15 +131,15 @@ transition: slide-up
 <div class="grid grid-cols-2 gap-8 mt-6 text-left">
 <div>
 
-### 🖥️ Host
+### 🖥️ Porty v knihovně
 
-- ESP32 (UART, USB CDC, SPI, SDIO)
-- STM32
-- Raspberry Pi Pico / Pico 2
+- ESP32: UART, USB CDC ACM, SPI, SDIO
+- STM32 (HAL)
+- Raspberry Pi Pico
 - Zephyr
 - Linux (PC, Raspberry Pi…)
-- 🆕 Arduino
-- 🆕 Android
+
+<span class="opacity-70 text-sm">Mimo knihovnu: 🆕 Arduino, 🆕 Android</span>
 
 </div>
 <div>
@@ -141,27 +161,57 @@ transition: slide-up
 
 # Port = pár funkcí 🧩
 
-```c {all|3-4|5-6|7-8|all}
-const esp_loader_port_ops_t arduino_port_ops = {
-    .init                     = arduino_init,
-    .enter_bootloader         = arduino_enter_bootloader,  // BOOT + RESET
-    .reset_target             = arduino_reset_target,
-    .start_timer              = arduino_start_timer,
-    .remaining_time           = arduino_remaining_time,
-    .write                    = arduino_write,             // UART TX
-    .read                     = arduino_read,              // UART RX
-    .delay_ms                 = arduino_delay_ms,
-    .change_transmission_rate = arduino_change_rate,
-    .log                      = arduino_log,               // volitelné
-};
+```c {all|2-3|4-5|6-8|9-11|all}
+typedef struct {
+    esp_loader_error_t (*init)(esp_loader_port_t *port);         // volitelné
+    void (*deinit)(esp_loader_port_t *port);                     // volitelné
+    void (*enter_bootloader)(esp_loader_port_t *port);           // BOOT + RESET
+    void (*reset_target)(esp_loader_port_t *port);
+    void     (*start_timer)(esp_loader_port_t *port, uint32_t ms);
+    uint32_t (*remaining_time)(esp_loader_port_t *port);
+    void     (*delay_ms)(esp_loader_port_t *port, uint32_t ms);
+    esp_loader_error_t (*write)(esp_loader_port_t *port, const uint8_t *data, …);
+    esp_loader_error_t (*read)(esp_loader_port_t *port, uint8_t *data, …);
+    esp_loader_error_t (*change_transmission_rate)(esp_loader_port_t *port, uint32_t rate);
+    void (*log)(…);                                              // volitelné
+    // + spi_set_cs, sdio_read/write/card_init pro SPI a SDIO
+} esp_loader_port_ops_t;
 ```
 
 - 📏 Arduino port ≈ 200 řádků, Android port ≈ 250 řádků
 - 🧱 Zbytek (protokol, stub, eFuse…) je společný
 
 <!--
-Tohle je skutečný port z Arduino knihovny (zkrácený o NULL položky pro SPI/SDIO).
+Skutečná struktura z include/esp_loader_io.h, zkrácené jen parametry a komentáře.
 Pointa: nová platforma = UART read/write, dva GPIO a časovač.
+-->
+
+---
+
+# Stav patří instanci, ne globálu 🧳
+
+```c {all|1-6|8-9|11-14|all}
+typedef struct {
+    esp_loader_port_t port;          // ukazatel na ops
+    uint32_t   uart_port;
+    gpio_num_t uart_rx_pin, uart_tx_pin, reset_pin, boot_pin;
+    /* … privátní stav portu … */
+} esp32_port_t;
+
+esp32_port_t port_a = { .port.ops = &esp32_uart_ops, .uart_port = UART_NUM_1, /* … */ };
+esp32_port_t port_b = { .port.ops = &esp32_uart_ops, .uart_port = UART_NUM_2, /* … */ };
+
+esp_loader_t loader_a, loader_b;                 // stav cíle: čip, stub, flash…
+esp_loader_init_serial(&loader_a, &port_a.port);
+esp_loader_init_serial(&loader_b, &port_b.port);
+```
+
+- 🎯 `esp_loader_t` drží stav cíle, port drží stav hardwaru
+- 🚫 Žádné globální proměnné → libovolný počet cílů najednou, každý ve svém tasku
+- 🔁 V callbacku `container_of(port, esp32_port_t, port)` → vlastní data
+
+<!--
+Tohle umožňuje paralelní flasher z dema: 8 cílů, 8 loaderů, 8 portů.
 -->
 
 ---
@@ -186,42 +236,6 @@ esp_loader_flash_finish(&loader, &cfg);   // ověří MD5
 <!--
 Pro hobbisty: připojit, nahrát, hotovo. Odkud data přijdou (SD karta, Wi-Fi, LittleFS, pole v C) je na vás.
 -->
-
----
-
-# Co je nového? 🆕
-
-<div class="grid grid-cols-2 gap-6 mt-6 text-left">
-
-<div v-click>
-
-### 🔐 eFuse API
-Čtení MAC a security info, zápis eFuse a klíčů přímo z hosta
-
-</div>
-
-<div v-click>
-
-### 🚀 Nový stub
-esp-flasher-stub: vyšší baudrate, flash > 2 MB, komprese, rychlé čtení
-
-</div>
-
-<div v-click>
-
-### 🔌 Rozhraní a čipy
-USB CDC ACM, SPI/SDIO do RAM, ESP32-C5, C61, H21, H4, P4, S31
-
-</div>
-
-<div v-click>
-
-### 🪶 Platíte jen za to, co používáte
-Bez stubu, jen jeden stub, nebo stub z externí paměti. eFuse tabulky jen pro vaše čipy
-
-</div>
-
-</div>
 
 ---
 
