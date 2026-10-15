@@ -49,8 +49,22 @@ Krátký callback na minulý talk. Pokud někdo minule nebyl, nevadí – navazo
 - 🗣️ esptool, esptool-js, espflash, Arduino IDE, ESP-IDF… všichni mluví s ROM
 - 📜 Protokol je veřejně zdokumentovaný a napříč čipy skoro stejný → může jím komunikovat každý
 
+<div class="flex items-center justify-center gap-2 mt-12 whitespace-nowrap" style="font-size: 0.85em">
+  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">🔄 Reset do ROM</div>
+  <span class="opacity-60">→</span>
+  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">🤝 Sync</div>
+  <span class="opacity-60">→</span>
+  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">🧹 Smazání flash</div>
+  <span class="opacity-60">→</span>
+  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">📦 Zápis po blocích 🔁</div>
+  <span class="opacity-60">→</span>
+  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">✅ Kontrola MD5</div>
+</div>
+
+<div class="mt-6 text-sm opacity-70">📖 <a href="https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/serial-protocol.html">esptool docs → Serial Protocol</a></div>
+
 <!--
-Záměrně bez detailů protokolu (SLIP, sync…). Pointa: komunikace s ROM bootloaderem je známá a stabilní,
+Záměrně bez detailů protokolu (SLIP, pakety…). Diagram = zjednodušený „Download procedure flow chart“ z esptool docs. Pointa: komunikace s ROM bootloaderem je známá a stabilní,
 takže ji může dělat kdokoliv, nejen Python na PC.
 -->
 
