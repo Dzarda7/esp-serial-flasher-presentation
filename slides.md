@@ -122,15 +122,15 @@ esptool jako C knihovna<br>
 
 - 🚀 Flasher stub: rychlejší, vyšší baudrate
 - 🔐 eFuse: čtení, zápis eFuse a klíčů
-- 🔧 Registry, změna baudrate, reset cíle
-- 🧳 Víc cílů najednou, každý svůj stav
+- 🔧 Registry, změna baudrate, reset čipu
+- 🧳 Víc čipů najednou, každý se svým stavem
 
 </div>
 </div>
 
 ---
 
-# Rozhraní: jak se dostat k cíli 🔌
+# Rozhraní: jak se připojit k čipu 🔌
 
 <div class="grid grid-cols-2 gap-4 mt-4 text-left">
 
@@ -198,65 +198,6 @@ Pointa: nová platforma = UART read/write, dva GPIO a časovač.
 
 ---
 
-# Implementace portu: Arduino 🔵
-
-<div class="grid grid-cols-2 gap-4 mt-2">
-<div>
-
-```cpp
-struct ArduinoFlasherPort {
-    esp_loader_port_t port = { &arduino_port_ops };
-    HardwareSerial *serial;
-    int reset_pin, boot_pin;
-};
-
-static void arduino_enter_bootloader(
-    esp_loader_port_t *port)
-{
-    ArduinoFlasherPort *p =
-        container_of(port, ArduinoFlasherPort, port);
-    digitalWrite(p->boot_pin, LOW);    // BOOT dole
-    digitalWrite(p->reset_pin, LOW);   // reset
-    delay(100);
-    digitalWrite(p->reset_pin, HIGH);  // start v ROM
-    delay(50);
-    digitalWrite(p->boot_pin, HIGH);
-}
-```
-
-</div>
-<div>
-
-```cpp
-static esp_loader_error_t arduino_write(
-    esp_loader_port_t *port, const uint8_t *data,
-    uint16_t size, uint32_t timeout)
-{
-    HardwareSerial *s = get_port(port)->serial;
-    return s->write(data, size) == size
-        ? ESP_LOADER_SUCCESS : ESP_LOADER_ERROR_FAIL;
-}
-
-const esp_loader_port_ops_t arduino_port_ops = {
-    .init             = arduino_init,
-    .enter_bootloader = arduino_enter_bootloader,
-    .write            = arduino_write,
-    .read             = arduino_read,
-    /* … časovač, delay, log … */
-};
-```
-
-</div>
-</div>
-
-<div class="mt-2 opacity-70 text-sm">Celý port ≈ 200 řádků · <code>container_of</code> → každá instance má svoje piny a UART</div>
-
-<!--
-Zjednodušeno z EspSerialFlasher.cpp (bez invert pinů a nastavitelných časů).
--->
-
----
-
 # Použití: port + knihovna
 
 ```c {1-7|8-9|11-12|14-18|all}
@@ -267,7 +208,7 @@ esp32_port_t port = {
     .uart_rx_pin = GPIO_NUM_5,  .uart_tx_pin = GPIO_NUM_4,
     .reset_pin   = GPIO_NUM_25, .boot_pin    = GPIO_NUM_26,
 };
-esp_loader_t loader;                                  // stav cíle: čip, stub, flash…
+esp_loader_t loader;                                  // stav čipu: typ, stub, flash…
 esp_loader_init_serial(&loader, &port.port);
 
 esp_loader_connect_args_t args = ESP_LOADER_CONNECT_DEFAULT();
@@ -280,11 +221,11 @@ while (/* data */)
 esp_loader_flash_finish(&loader, &cfg);               // ověří MD5
 ```
 
-<div class="mt-3">🧳 Žádné globály: další cíl = další port + další <code>esp_loader_t</code> → paralelní flashování</div>
+<div class="mt-3">🧳 Žádné globály: další čip = další port + další <code>esp_loader_t</code> → paralelní flashování</div>
 
 <!--
 Port pro ESP32 je přímo v knihovně (port/esp32_port.h). Odkud data přijdou (SD karta, Wi-Fi, LittleFS, pole v C) je na vás.
-Paralelní demo: 8 cílů = 8 portů + 8 loaderů, každý ve vlastním tasku.
+Paralelní demo: 8 čipů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 -->
 
 ---
@@ -397,11 +338,11 @@ Demo: záznam z telefonu (scrcpy --record), ESP32-C5 přes OTG.
   <source src="/videos/parallel-demo.mp4" type="video/mp4" />
 </SlidevVideo>
 
-<div class="mt-3 text-center opacity-70">ESP32-P4 · 4× UART + 4× USB přes hub · každý cíl má vlastní <code>esp_loader_t</code></div>
+<div class="mt-3 text-center opacity-70">ESP32-P4 · 4× UART + 4× USB přes hub · každý čip má vlastní <code>esp_loader_t</code></div>
 
 <!--
 Záznam přímo z displeje P4 (main/capture.c v serial_flasher_demo), kruh = dotyk.
-Pointa: výrobní linka bez PC, každý cíl běží ve vlastním tasku nezávisle na ostatních.
+Pointa: výrobní linka bez PC, každý čip se flashuje ve vlastním tasku nezávisle na ostatních.
 UART flashování je v záznamu zrychlené 2,5×, USB 2×.
 -->
 
