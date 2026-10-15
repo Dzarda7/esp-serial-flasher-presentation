@@ -32,7 +32,7 @@ layout: center
 ---
 
 <div class="text-center text-4xl leading-relaxed">
-  Minule na ESP USB Bridge… 📺<br>
+  Minule na ESP USB Bridge…<br>
   <span class="opacity-60 text-2xl">„Konec první kapitoly, příště esp-serial-flasher spin-off“</span><br><br>
   Kapitola druhá 🎬
 </div>
