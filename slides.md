@@ -46,7 +46,7 @@ Krátký callback na minulý talk. Pokud někdo minule nebyl, nevadí – navazo
 # Jak se ESP vlastně flashuje?
 
 - 🧠 Každý ESP čip má v ROM bootloader, ten se nedá rozbít
-- 🗣️ esptool, esptool-js, Arduino IDE, ESP-IDF… všichni mluví s ROM
+- 🗣️ esptool, esptool-js, espflash, Arduino IDE, ESP-IDF… všichni mluví s ROM
 - 🔌 Cesty k čipu: UART, USB-Serial-JTAG, SPI, SDIO (víc za chvíli)
 
 <!--
