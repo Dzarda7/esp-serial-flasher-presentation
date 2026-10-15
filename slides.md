@@ -46,25 +46,36 @@ Krátký callback na minulý talk. Pokud někdo minule nebyl, nevadí – navazo
 # Jak se ESP vlastně flashuje?
 
 - 🧠 Každý ESP čip má v ROM bootloader, ten se nedá rozbít
-- 🗣️ esptool, esptool-js, espflash, Arduino IDE, ESP-IDF… všichni mluví s ROM
+- 🗣️ Všechny flashovací nástroje mluví se stejnou ROM
 - 📜 Protokol je veřejně zdokumentovaný a napříč čipy skoro stejný → může jím komunikovat každý
 
-<div class="flex items-center justify-center gap-2 mt-12 whitespace-nowrap" style="font-size: 0.85em">
-  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">🔄 Reset do ROM</div>
-  <span class="opacity-60">→</span>
-  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">🤝 Sync</div>
-  <span class="opacity-60">→</span>
-  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">🧹 Smazání flash</div>
-  <span class="opacity-60">→</span>
-  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">📦 Zápis po blocích 🔁</div>
-  <span class="opacity-60">→</span>
-  <div class="border-2 border-blue-400 rounded-lg px-3 py-2">✅ Kontrola MD5</div>
+<div class="flex items-center justify-center mt-8">
+  <div class="flex flex-col gap-2">
+    <div class="border border-gray-500 rounded-md px-3 text-right" style="height:32px;line-height:30px">esptool</div>
+    <div class="border border-gray-500 rounded-md px-3 text-right" style="height:32px;line-height:30px">esptool-js</div>
+    <div class="border border-gray-500 rounded-md px-3 text-right" style="height:32px;line-height:30px">espflash</div>
+    <div class="border border-gray-500 rounded-md px-3 text-right" style="height:32px;line-height:30px">Arduino IDE</div>
+    <div class="border border-gray-500 rounded-md px-3 text-right" style="height:32px;line-height:30px">ESP-IDF</div>
+  </div>
+  <div class="relative">
+  <div class="absolute text-sm opacity-60" style="left:130px;top:72px">UART / USB</div>
+  <svg width="260" height="200" viewBox="0 0 260 200">
+    <defs><marker id="arr" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#60a5fa"/></marker></defs>
+    <line x1="0" y1="20" x2="120" y2="100" stroke="#60a5fa" stroke-width="2"/>
+    <line x1="0" y1="60" x2="120" y2="100" stroke="#60a5fa" stroke-width="2"/>
+    <line x1="0" y1="100" x2="120" y2="100" stroke="#60a5fa" stroke-width="2"/>
+    <line x1="0" y1="140" x2="120" y2="100" stroke="#60a5fa" stroke-width="2"/>
+    <line x1="0" y1="180" x2="120" y2="100" stroke="#60a5fa" stroke-width="2"/>
+    <line x1="120" y1="100" x2="250" y2="100" stroke="#60a5fa" stroke-width="3" marker-end="url(#arr)"/>
+  </svg>
+  </div>
+  <div class="border-2 border-blue-400 rounded-xl px-6 py-5 text-xl">🧠 ROM bootloader</div>
 </div>
 
 <div class="mt-6 text-sm opacity-70">📖 <a href="https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/serial-protocol.html">esptool docs → Serial Protocol</a></div>
 
 <!--
-Záměrně bez detailů protokolu (SLIP, pakety…). Diagram = zjednodušený „Download procedure flow chart“ z esptool docs. Pointa: komunikace s ROM bootloaderem je známá a stabilní,
+Záměrně bez detailů protokolu (SLIP, pakety…). Pointa: komunikace s ROM bootloaderem je známá a stabilní,
 takže ji může dělat kdokoliv, nejen Python na PC.
 -->
 
