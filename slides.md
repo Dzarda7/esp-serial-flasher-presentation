@@ -437,12 +437,29 @@ TODO: video dema. Aktuálně link test na ESP32-S3-LCD-EV-Board (~/Documents/My/
 - 📦 ESP Component Registry: `espressif/esp-serial-flasher`
 - 🔵 Arduino: `github.com/Dzarda7/EspSerialFlasher`
 - 📱 Android: `github.com/Dzarda7/esp-flasher-android`
-- 🐛 Issues a PR vítány, hlavně nové porty!
+- 🐛 Issues a PR vítány!
 
 ---
 
 <div class="flex items-center justify-center h-full">
-  <div class="text-center text-4xl">
-  Díky! 🙏<br><br>Otázky?
-  </div>
+<div class="font-mono text-left text-lg leading-relaxed bg-black/60 border border-gray-600 rounded-xl px-8 py-6 shadow-lg">
+<div class="opacity-60">$ ./esp-serial-flasher prezentace.bin → publikum</div>
+<div>Connected to target</div>
+<div>Transmission rate changed.</div>
+<div>Erasing flash (this may take a while)...</div>
+<div>Start programming</div>
+<div>Progress: 100 %</div>
+<div>Finished programming</div>
+<div class="text-green-400">Flash verified</div>
+<div class="mt-4 text-3xl font-sans">Otázky? 🙋<span class="cursor">▌</span></div>
 </div>
+</div>
+
+<style>
+.cursor { animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+</style>
+
+<!--
+Hlášky jsou skutečné výpisy z příkladů esp-serial-flasher (examples/common/example_common.c).
+-->
