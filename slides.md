@@ -47,10 +47,7 @@ Krátký callback na minulý talk. Pokud někdo minule nebyl, nevadí – navazo
 
 - 🧠 Každý ESP čip má v ROM bootloader, ten se nedá rozbít
 - 🗣️ esptool, esptool-js, Arduino IDE, ESP-IDF… všichni mluví s ROM
-- 🔌 Cesty k čipu:
-  - UART + BOOT a RESET pin
-  - USB-Serial-JTAG / USB CDC
-  - SPI a SDIO (nahrání do RAM)
+- 🔌 Cesty k čipu: UART, USB-Serial-JTAG, SPI, SDIO (víc za chvíli)
 
 <!--
 Záměrně bez detailů protokolu (SLIP, sync…). Pointa: komunikace s ROM bootloaderem je známá a stabilní,
@@ -126,36 +123,43 @@ eFuse tabulky se linkují jen pro vybrané čipy.
 
 ---
 
-# Kdo flashuje a koho
+# Rozhraní: jak se dostat k cíli 🔌
 
-<div class="grid grid-cols-2 gap-8 mt-6 text-left">
-<div>
+<div class="grid grid-cols-2 gap-4 mt-4 text-left">
 
-### 🖥️ Porty v knihovně
+<div class="border border-gray-600 rounded-lg px-4 py-2">
+<b>🧵 UART</b> <span class="opacity-70 text-sm">+ BOOT a RESET pin</span><br>
+<span class="text-sm">Všechno umí, všechny čipy od ESP8266 po S31</span>
+</div>
 
-- ESP32: UART, USB CDC ACM, SPI, SDIO
-- STM32 (HAL)
-- Raspberry Pi Pico
-- Zephyr
-- Linux (PC, Raspberry Pi…)
+<div class="border border-gray-600 rounded-lg px-4 py-2">
+<b>🔌 USB-Serial-JTAG / USB CDC</b><br>
+<span class="text-sm">Bez převodníku a bez extra pinů, reset řeší USB<br>S3, C3, C5, C6, C61, H2, H21, H4, P4, S31</span>
+</div>
 
-<span class="opacity-70 text-sm">Mimo knihovnu: 🆕 Arduino, 🆕 Android</span>
+<div class="border border-gray-600 rounded-lg px-4 py-2">
+<b>⚡ SPI</b> <span class="opacity-70 text-sm">jen nahrání do RAM</span><br>
+<span class="text-sm">Rychlý start kódu bez flashování<br>S3, C2, C3, H2</span>
+</div>
+
+<div class="border border-gray-600 rounded-lg px-4 py-2">
+<b>💾 SDIO</b> <span class="opacity-70 text-sm">experimentální</span><br>
+<span class="text-sm">Plný stub přes SDIO: flash, čtení, eFuse<br>C5, C6</span>
+</div>
 
 </div>
-<div>
 
-### 🎯 Cíl
+<div class="mt-6 text-left">
 
-- ESP8266
-- ESP32, S2, S3
-- C2, C3, C5, C6, C61
-- H2, H21, H4
-- P4, S31
-
-<span class="opacity-70 text-sm">UART všude, USB CDC, SPI a SDIO podle čipu</span>
+🖥️ <b>Porty v knihovně:</b> ESP32 (UART, USB CDC, SPI, SDIO), STM32, Raspberry Pi Pico, Zephyr, Linux<br>
+<span class="opacity-70">Mimo knihovnu: 🆕 Arduino, 🆕 Android</span>
 
 </div>
-</div>
+
+<!--
+Podle tabulky v README esp-serial-flasher. Ve vývoji: SPI pro H21, P4, H4; SDIO pro ESP32 a C61.
+USB CDC na straně hostitele = ESP32-S3/P4 jako USB host (paralelní demo, Android).
+-->
 
 ---
 
