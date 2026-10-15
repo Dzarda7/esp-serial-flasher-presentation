@@ -293,7 +293,9 @@ class: text-left
 ---
 
 <div class="absolute left-4 top-2 bottom-2 w-80">
-  <video src="/videos/android-demo.mp4" autoplay loop muted playsinline class="h-full mx-auto rounded-xl shadow-lg" />
+  <SlidevVideo autoplay autoreset="slide" loop muted playsinline class="h-full mx-auto rounded-xl shadow-lg">
+    <source src="/videos/android-demo.mp4" type="video/mp4" />
+  </SlidevVideo>
 </div>
 
 <div class="ml-76">
@@ -317,7 +319,9 @@ Demo: záznam z telefonu (scrcpy --record), ESP32-C5 přes OTG.
 
 # ⚡ Paralelní flasher
 
-<video src="/videos/parallel-demo.mp4" autoplay loop muted playsinline class="h-100 mx-auto mt-4 rounded-lg shadow-lg" />
+<SlidevVideo autoplay autoreset="slide" loop muted playsinline class="h-100 mx-auto mt-4 rounded-lg shadow-lg">
+  <source src="/videos/parallel-demo.mp4" type="video/mp4" />
+</SlidevVideo>
 
 <div class="mt-3 text-center opacity-70">ESP32-P4 · 4× UART + 4× USB přes hub · každý cíl má vlastní <code>esp_loader_t</code></div>
 
