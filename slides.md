@@ -133,8 +133,8 @@ eFuse tabulky se linkují jen pro vybrané čipy.
 </div>
 
 <div class="border border-gray-600 rounded-lg px-4 py-2">
-<b>🔌 USB-Serial-JTAG / USB CDC</b><br>
-<span class="text-sm">Bez převodníku a bez extra pinů, reset řeší USB<br>S3, C3, C5, C6, C61, H2, H21, H4, P4, S31</span>
+<b>🔌 USB</b> <span class="opacity-70 text-sm">bez převodníku, rovnou do čipu</span><br>
+<span class="text-sm"><b>USB-Serial-JTAG:</b> S3, C3, C5, C6, C61, H2, H21, H4, P4, S31<br><b>USB-OTG (CDC):</b> S2, S3, P4</span>
 </div>
 
 <div class="border border-gray-600 rounded-lg px-4 py-2">
@@ -157,7 +157,7 @@ eFuse tabulky se linkují jen pro vybrané čipy.
 </div>
 
 <!--
-Podle tabulky v README esp-serial-flasher. Ve vývoji: SPI pro H21, P4, H4; SDIO pro ESP32 a C61.
+Podle README esp-serial-flasher (USB-Serial-JTAG) a esptoolu (USB-OTG: S2, S3, P4 – v README ESF zatím chybí, ale funguje). Ve vývoji: SPI pro H21, P4, H4; SDIO pro ESP32 a C61.
 USB CDC na straně hostitele = ESP32-S3/P4 jako USB host (paralelní demo, Android).
 -->
 
