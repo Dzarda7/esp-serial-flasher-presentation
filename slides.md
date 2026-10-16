@@ -343,17 +343,14 @@ UART flashování je v záznamu zrychlené 2,5×, USB 2×.
 
 ---
 
-# 🦠 Řetězový flasher
+# Řetězový dopis 📨
 
-### ESP, které nakazí souseda
+### Pošli to dál, jinak tě stihne brick
 
 <div class="grid grid-cols-[1fr_1.35fr] gap-6 mt-6 items-center">
 <div>
 
-- 🧬 Každá deska zkopíruje svůj vlastní firmware do další
-- 💾 Čte ho přímo ze své flash: bootloader, tabulka oddílů, aplikace
-- 🔌 USB host → USB-UART souseda → ROM bootloader
-- 🔁 Tři ESP32-S3 do kruhu → běží donekonečna
+<div class="text-2xl leading-relaxed">💾 Každé ESP přečte svůj vlastní firmware ze své flash a nahraje ho sousedovi</div>
 
 </div>
 
