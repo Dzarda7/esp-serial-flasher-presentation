@@ -389,7 +389,7 @@ Video je 3× zrychlené.
 </div>
 <div class="flex flex-col items-center gap-2 text-sm">
   <img src="/images/slides-qr.svg" class="w-36 h-36 bg-white p-2 rounded-lg" />
-  <span class="opacity-80">📎 Slidy</span>
+  <span class="opacity-80">📎 Prezentace</span>
   <a href="https://dzarda7.github.io/esp-serial-flasher-presentation/" class="text-xs opacity-80">dzarda7.github.io/<br>esp-serial-flasher-presentation</a>
 </div>
 </div>
