@@ -230,7 +230,7 @@ Paralelní demo: 8 čipů = 8 portů + 8 loaderů, každý ve vlastním tasku.
 
 ---
 
-# Kolik to stojí? 🪶
+# Velikost knihovny 📦
 
 <div class="text-sm opacity-70 mt-1">Jen knihovna (bez portu a libc) · connect + flash + MD5 · <code>-Os</code>, <code>--gc-sections</code>, logování vypnuté</div>
 
