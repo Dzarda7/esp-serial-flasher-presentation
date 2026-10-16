@@ -375,7 +375,7 @@ Video je 3× zrychlené.
 
 ---
 
-<div class="flex items-center justify-center h-full">
+<div class="flex items-center justify-center gap-8 h-full">
 <div class="font-mono text-left text-lg leading-relaxed bg-black/60 border border-gray-600 rounded-xl px-8 py-6 shadow-lg">
 <div class="opacity-60">$ ./esp-serial-flasher prezentace.bin → publikum</div>
 <div>Connected to target</div>
@@ -386,6 +386,11 @@ Video je 3× zrychlené.
 <div>Finished programming</div>
 <div class="text-green-400">Flash verified</div>
 <div class="mt-4 text-3xl font-sans">Otázky? 🙋<span class="cursor">▌</span></div>
+</div>
+<div class="flex flex-col items-center gap-2 text-sm">
+  <img src="/images/slides-qr.svg" class="w-36 h-36 bg-white p-2 rounded-lg" />
+  <span class="opacity-80">📎 Slidy</span>
+  <a href="https://dzarda7.github.io/esp-serial-flasher-presentation/" class="text-xs opacity-80">dzarda7.github.io/<br>esp-serial-flasher-presentation</a>
 </div>
 </div>
 
