@@ -347,22 +347,25 @@ UART flashování je v záznamu zrychlené 2,5×, USB 2×.
 
 ### ESP, které nakazí souseda
 
-<div class="flex items-center justify-center gap-4 mt-10 text-xl">
-  <div class="border-2 border-blue-400 rounded-lg px-5 py-4">ESP A</div>
-  <div v-click class="flex items-center gap-4">➡️ <div class="border-2 border-blue-400 rounded-lg px-5 py-4">ESP B</div></div>
-  <div v-click class="flex items-center gap-4">➡️ <div class="border-2 border-blue-400 rounded-lg px-5 py-4">ESP C</div></div>
-  <div v-click class="flex items-center gap-4">➡️ <div class="border-2 border-blue-400 rounded-lg px-5 py-4">…</div></div>
+<div class="grid grid-cols-[1fr_1.35fr] gap-6 mt-6 items-center">
+<div>
+
+- 🧬 Každá deska zkopíruje svůj vlastní firmware do další
+- 💾 Čte ho přímo ze své flash: bootloader, tabulka oddílů, aplikace
+- 🔌 USB host → USB-UART souseda → ROM bootloader
+- 🔁 Tři ESP32-S3 do kruhu → běží donekonečna
+
 </div>
 
-<div class="mt-10">
-
-- 🧬 Každá deska nahraje svůj firmware do další
-- 🔌 USB host → USB-UART souseda → ROM bootloader
+<SlidevVideo autoplay autoreset="slide" loop muted playsinline class="w-full rounded-lg shadow-lg">
+  <source src="/videos/chain-demo.mp4" type="video/mp4" />
+</SlidevVideo>
 
 </div>
 
 <!--
-TODO: video dema. Aktuálně link test na ESP32-S3-LCD-EV-Board (~/Documents/My/flasher_chain).
+ESP32-S3-LCD-EV-Board ×3 (~/Documents/My/flasher_chain). USB OTG port jako host, sousedův CP2102N jako USB-UART.
+Video je 3× zrychlené.
 -->
 
 ---
