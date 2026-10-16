@@ -343,7 +343,7 @@ UART flashování je v záznamu zrychlené 2,5×, USB 2×.
 
 ---
 
-# Grupáč 🥳
+# Grupáč
 
 <div class="grid grid-cols-[1fr_1.35fr] gap-6 mt-6 items-center">
 <div>
