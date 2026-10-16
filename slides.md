@@ -188,7 +188,7 @@ typedef struct {
 } esp_loader_port_ops_t;
 ```
 
-- 📏 Arduino port ≈ 200 řádků, Android port ≈ 250 řádků
+- 📏 Arduino port ≈ 200 řádků
 - 🧱 Zbytek (protokol, stub, eFuse…) je společný
 
 <!--
